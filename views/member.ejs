@@ -1,28 +1,33 @@
 <!DOCTYPE html>
+<html lang="en">
 <head>
 	<title><%=members.HFirstName%> and <%=members.WFirstName%> <%=members.LastName%></title>
-
 	<link rel="stylesheet" type="text/css" href="/CSS/member-style.css">
 	<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
 </head>
 <body>
-	<img src="http://jennstrends.com/wp-content/uploads/2013/10/bad-profile-pic-2.jpeg" id="img">
-	<!-- <form name="uploadForm" onsubmit="return OnSubmitForm()" method='post'>
-		<input id="chooseFile" type="file" name="sampleFile" onchange="previewFile()">
-		<input type="submit" value="upload">
-		<img src="">
-		<%=members.img.data%>
-	</form>
- -->
+<a id="back" href="/index">Back to Member List</a>
+	<div id="printBut">
+		<br>Print<br><button onclick="printButton()" id="button" ></button>
+	</div>
 
-
+ 	<div id="photoDiv">
+		<button onclick="rotate()" id="rotBut">Rotate Image</button>
+	 	<form action="/upload/<%=members._id%>" enctype="multipart/form-data" method="post">
+			<p><img src="/photo/<%=members._id%>" id="img" class="normal"></p>
+            <br><input type="file" name="upl" id="fileBut" onchange="previewFile()" accept="image/*">
+            <input type="submit" value="Upload" id="uplBut">
+	
+    	</form>
+	</div>
 
 	<div id="fam">
 		<h3 id="FirstNames"><%=members.HFirstName%> and <%=members.WFirstName%></h3>
 		<h1 id="LastName"><%=members.LastName%></h1>
 	</div>
-		<br><br><br><br><h2>General Information</h2>
-		<table id="GeneralTable" style="width:40%" class="w3-table w3-striped w3-bordered w3-large">
+	<div id="tables">
+		<br><u><h2 id="GI">General Information</h2></u>
+		<table id="GeneralTable" style="width:35%" class="w3-table w3-striped w3-bordered w3-large">
 			<tr>
 				<th><%=members.HFirstName%>'s Phone Number</th>
 				<td><%=members.HPhone%></td>
@@ -31,10 +36,19 @@
 				<th><%=members.WFirstName%>'s Phone Number</th>
 				<td><%=members.WPhone%></td>
 			</tr>
+			<tr id= "HEmail">
+				<th><%=members.HFirstName%>'s Email</th>
+				<td><%=members.HEmail%></td>
+			</tr>
+			<tr id= "WEmail">
+				<th><%=members.WFirstName%>'s Email</th>
+				<td><%=members.WEmail%></td>
+			</tr>
 			<tr>
 				<th>Address</th>
 				<td><%=members.Address%></td>
 			</tr>
+			
 			<tr>
 				<th><%=members.HFirstName%>'s Birthday</th>
 				<td><%=members.HBirthday%></td>
@@ -43,9 +57,12 @@
 				<th><%=members.WFirstName%>'s Birthday</th>
 				<td><%=members.WBirthday%></td>
 			</tr>
+			
 			<tr>
 				<th>Ward Move in Date</th>
-				<td><%=members.MoveinDate%></td>
+				<%if(members.MoveinDate != null){%>
+				<td><%=members.MoveinDate.toUTCString().replace("00:00:00 GMT"," ")%></td>
+				<%}%>
 			</tr>
 			<tr>
 				<th>Plan on staying in the ward</th>
@@ -53,8 +70,8 @@
 			</tr>
 		</table>
 	
-		<br><strong><h2>Mission</h2></strong>
-		<table id="MissionTable" style="width:40%" class="w3-table w3-striped w3-bordered w3-large">
+		<u><h2 id="GI">Mission</h2></u>
+		<table id="MissionTable" style="width:35%" class="w3-table w3-striped w3-bordered w3-large">
 				<th><%=members.HFirstName%>'s Mission</th>
 				<td><%=members.HMission%></th>
 			</tr>
@@ -64,8 +81,8 @@
 			</tr>
 		</table>
 
-		<br><strong><h2><%=members.HFirstName%>'s Musical Abilities</h2></strong>
-			<table style="width:40%" class="w3-table w3-striped w3-bordered w3-large">
+		<u><h2 id="GI"><%=members.HFirstName%>'s Musical Abilities</h2></u>
+			<table style="width:35%" class="w3-table w3-striped w3-bordered w3-large">
 				<tr>
 					<th>Vocal:</th>
 					<td><%=members.HVocalAbilities%></td>
@@ -84,8 +101,8 @@
 				</tr>
 			</table>
 
-		<br><strong><h2><%=members.WFirstName%>'s Musical Abilities</h2></strong>
-			<table style="width:40%" class="w3-table w3-striped w3-bordered w3-large">
+		<u><h2 id="GI"><%=members.WFirstName%>'s Musical Abilities</h2></u>
+			<table style="width:35%" class="w3-table w3-striped w3-bordered w3-large">
 				<tr>
 					<th>Vocal:</th>
 					<td><%=members.WVocalAbilities%></td>
@@ -104,8 +121,8 @@
 				</tr>
 			</table>
 
-		<br><strong><h2>Education</h2></strong>
-			<table style="width:40%" class="w3-table w3-striped w3-bordered w3-large">
+		<strong><u><h2 id="GI">Education</h2></strong></u>
+			<table style="width:35%" class="w3-table w3-striped w3-bordered w3-large">
 				<tr>
 					<th id="blankSpace"> </th>
 					<th>Major</th>
@@ -122,9 +139,9 @@
 					<td><%=members.WSchool%></td>
 				</tr>		
 			</table>
-
-		<br><h2>Work</h2>
-			<table style="width:40%" class="w3-table w3-striped w3-bordered w3-large">
+	<div id="workHobbies">
+		<u><h2 id="GI">Work</h2></u>
+			<table id="worktable" style="width:35%" class="w3-table w3-striped w3-bordered w3-large">
 				<tr>
 					<th><%=members.HFirstName%></th>
 					<td><%=members.HWork%></td>
@@ -135,8 +152,8 @@
 				</tr>
 			</table>
 
-		<br><h2>Hobbies</h2>
-			<table style="width:40%" class="w3-table w3-striped w3-bordered w3-large">
+		<u><h2 id="GI">Hobbies</h2></u>
+			<table id="hobbiestable" style="width:35%" class="w3-table w3-striped w3-bordered w3-large">
 				<tr>
 					<th><%=members.HFirstName%></th>
 					<td><%=members.HHobbies%></td>
@@ -146,22 +163,90 @@
 					<td><%=members.WHobbies%></td>
 				</tr>
 			</table>
-		
-		</form>
-	</body>
-	<script type="text/javascript">
- function OnSubmitForm()
-{
- 	var fileInput = document.getElementById("chooseFile").value.replace("C:\\fakepath\\", "")
-	document.uploadForm.action ="/upload/<%=members._id%>/" + fileInput;
- 	return true;
- }
+		</div>
+	</div>
+
+</form>
+
+</body>
+ <script type="text/javascript">
+	   
+//  function OnSubmitForm()
+// {
+//  	var fileInput = document.getElementById("img2").value.replace("C:\\fakepath\\", "")
+// 	document.uploadForm.action ="/upload/<%=members._id%>/" + fileInput;
+//  	return true;
+//  }
+	
+function rotate() {
+		var element = document.getElementById('img');
+		var rotButt = document.getElementById("rotBut");
+		var chooseFile = document.getElementById("fileBut");
+		var uplButt = document.getElementById("uplBut");
+
+		if (element.className === "normal") {
+			element.className = "rotate";
+			rotButt.style.top=5 + "px";
+			chooseFile.style.top=30 + "px";
+			uplButt.style.top=30 + "px";
+
+		}
+		else if ( element.className === "rotate") {
+			element.className = 'normal';
+			rotButt.style.top=25 + "px";
+			chooseFile.style.top=0 + "px";
+			uplButt.style.top=0 + "px";
+
+		}
+
+	chooseFile.className = "moveDown";
+	uplButt.className = "moveDown";
+	}
 
 
+function printButton(){
+	var rotBut = document.getElementById("rotBut");
+	var chooseFile = document.getElementById("fileBut");
+	var uplBut = document.getElementById("uplBut");
+	var printer = document.getElementById("printBut");
+	var back = document.getElementById("back");
+	document.getElementById("GeneralTable").deleteRow(2);
+	document.getElementById("GeneralTable").deleteRow(2);
+
+
+	rotBut.style.visibility = "hidden";
+	chooseFile.style.visibility = "hidden";
+	uplBut.style.visibility = "hidden";
+	printer.style.visibility = "hidden";
+	back.style.visibility = "hidden";
+	document.body.style.zoom = "90%";
+
+	var GI = document.getElementById("tables");
+		GI.className = "moveGIUp";
+	
+	var famchange = document.getElementById("fam");
+	famchange.className = "shrinkName";
+
+	var imgChange = document.getElementById("img");
+	if(imgChange.className === "rotate"){
+		imgChange.className = "shrinkRotate";
+	}else if (imgChange.className === "normal"){
+		imgChange.className = "shrinkNormal";
+	}
+
+	window.print();
+}
+
+function rotateDisappear(){
+	var rotBut = document.getElementById("rotBut");
+	rotBut.style.visibility = "hidden";
+}
   function previewFile(){
        var preview = document.querySelector('img'); //selects the query named img
        var file    = document.querySelector('input[type=file]').files[0]; //sames as here
        var reader  = new FileReader();
+	   var rotBut = document.getElementById("rotBut");
+		rotBut.style.visibility = "visible";
 
        reader.onloadend = function () {
            preview.src = reader.result;
@@ -172,6 +257,12 @@
        } else {
            preview.src = "";
        }
+
   }
-	</script>
+
+  function hidepic(){
+	  var imag = document.getElementById("img");
+	  imag.className = "hidePic";
+  }
+ 	</script>
 </html>
