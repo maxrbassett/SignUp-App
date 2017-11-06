@@ -122,8 +122,8 @@ body{
 }
     #myinput {
     background-color: #ECE9E9;
-    background-position: 0px; /* Position the search icon */
-    background-size: 5%;
+    background-position: -5px;
+    background-size: 4%;
     background-image: url("http://pixsector.com/cache/e7836840/ave6d43d85eb121839a10.png");
     background-repeat: no-repeat; /* Do not repeat the icon image */
     width: 90%; /* Full-width */
@@ -141,6 +141,7 @@ body{
     /* Remove default list styling */
     list-style-type: none;
     padding: 0;
+    margin: 10px;
     }
 
     #memberlist li a {
