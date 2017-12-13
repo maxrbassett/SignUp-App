@@ -1,0 +1,54 @@
+body{
+    background-color: #236EAD;
+}
+#header{
+    text-align: center;
+    color: white;
+    font-size: 50px;
+    margin-top: 80px;
+    margin-bottom: -180px;
+}
+#loginContainer{
+    text-align: center;
+    background-color: #FFFFFF;
+    box-shadow: 5px 0px 20px 0px;
+    padding-top: 20px;
+    padding-bottom: 50px;
+    margin: 150px;
+    margin-left: 500px;
+    margin-right: 500px;
+
+}
+
+#login{
+    font-size: 25px;
+    color: #979191;
+}
+
+.inputbox{
+    
+    padding: 10px;
+
+    box-shadow: 2px 2px 2px 0px;
+    border-radius: 3px;
+    width: 250px;
+    height: 30px;
+    font-size: 20px;
+}
+
+::-webkit-input-placeholder{
+    font-size: 20px;
+}
+#or{
+    color: #979191;
+}
+
+.submit{
+    padding: 10px;
+    box-shadow: 2px 2px 2px 0px;
+    background-color: #236EAD;
+    color: white;
+    font-size: 20px;
+    text-align: center;
+    width: 270px;
+}

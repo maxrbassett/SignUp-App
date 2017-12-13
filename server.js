@@ -5,6 +5,7 @@ const bodyParser = require('body-parser');
 const app = express();
 const mongoClient = require('mongodb').MongoClient;
 var path = require('path');
+const firebase = require('firebase');
 //var fs = require('file-system');
 var fs = require('fs');
 var multer = require('multer');
@@ -66,6 +67,16 @@ mongoClient.connect(process.env.MONGODB_URI,(err,database) =>{
     console.log("App now running on port", port);
   });
 })
+//Set up firebase
+var config = {
+	apiKey: "AIzaSyDhzQwElOE6UdyjLjtFQ4N9bYXszjMm1Bw",
+	authDomain: "wardformauth.firebaseapp.com",
+	databaseURL: "https://wardformauth.firebaseio.com",
+	projectId: "wardformauth",
+	storageBucket: "wardformauth.appspot.com",
+	messagingSenderId: "110889448695"
+  };
+  firebase.initializeApp(config);
 
 app.set('view engine', 'ejs')
 app.use(bodyParser.urlencoded({extended: true}))
@@ -78,6 +89,10 @@ app.set('views', path.join(__dirname, 'views'));
 
 app.get('/', (req, res) => {
 	res.sendFile(path.resolve(__dirname + '/index.html'));
+})
+
+app.get('/auth', (req, res) => {
+	res.sendFile(path.resolve(__dirname + '/auth.html'));
 })
 
 app.get('/profile/:_id/image', function(req,res,next) {
@@ -138,6 +153,7 @@ app.get('/profile/:_id/image', function(req,res,next) {
  
 
 app.post('/WardForm2', (req, res) => {
+	
 	db.collection('members').save(req.body, (err, result) => {
 		if(err) return console.log(err)
 		console.log('Saved to your Database')
@@ -149,18 +165,57 @@ app.get('/ThankYou', (req, res) => {
 	res.sendFile(path.resolve(__dirname + '/ThankYou.html'));
 })
 
-
 app.get('/index', (req,res) => {
-	Member.find({}).sort({"MoveinDate": 1}).exec(function(err, users){
-		var userMap = {};
-		
-			users.forEach(function(user) {
-			  userMap[user._id] = user;
-			});
-		
-			res.render('index.ejs', {members: users});  
-		  });
-	
+	var user = firebase.auth().currentUser;
+	if(user){
+		Member.find({}).sort({"MoveinDate": 1}).exec(function(err, users){
+			var userMap = {};
+				users.forEach(function(user) {
+				  userMap[user._id] = user;
+				});
+				res.render('index.ejs', {members: users});  
+				res.end();
+			  });
+	}else{
+		console.log("user is NULLY")
+		res.redirect('/auth');
+	}
+})
+
+
+app.post('/index', (req,res) => {
+	var email = req.body.email;
+	var password = req.body.password;
+	if(req.body.submit == "Sign In"){
+	 	firebase.auth().signInWithEmailAndPassword(email, password).catch(function(error){
+            var errorCode = error.code;
+			console.log("This is the error" + error.message);
+			var message = error.message;
+			return res.status(404).send({message});
+			res.end();
+		})
+	}else if(req.body.submit == "Create Member"){
+		firebase.auth().createUserWithEmailAndPassword(email, password).catch(function(error){
+            var errorCode = error.code;
+			console.log("This is the error" + error.message);
+			var message = error.message;
+			return res.status(404).send({message});
+			res.end();
+		})
+	}
+		 firebase.auth().onAuthStateChanged(function(user) {                
+			 if (user) {
+				 res.redirect("/index");
+				 res.end();
+			 }else {}
+		})		
+})
+
+
+app.get('/signOut', (req,res) => {
+	firebase.auth().signOut().then(function(){
+		res.redirect('/auth');
+	}).catch(function(error){})
 })
 
 app.get('/member/:_id', (req,res) => {

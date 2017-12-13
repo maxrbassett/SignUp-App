@@ -4,6 +4,20 @@
 
 <link href="CSS/index-style.css" rel="stylesheet" type="text/css">
 <script type="text/javascript" src="script.js"></script>
+
+ <script src="https://www.gstatic.com/firebasejs/4.8.0/firebase.js"></script>
+        <script>
+            // Initialize Firebase
+            var config = {
+              apiKey: "AIzaSyDhzQwElOE6UdyjLjtFQ4N9bYXszjMm1Bw",
+              authDomain: "wardformauth.firebaseapp.com",
+              databaseURL: "https://wardformauth.firebaseio.com",
+              projectId: "wardformauth",
+              storageBucket: "wardformauth.appspot.com",
+              messagingSenderId: "110889448695"
+            };
+            firebase.initializeApp(config);
+          </script>
 </head>
 
 <body onload="passWord()">
@@ -11,8 +25,12 @@
   <div id="top">
   <h1>List of Members</h1>
 </div><br>
-
-<a id="deleteButton" href="/delete"></a>
+<div id="topIcons"> 
+    <a id="createMem" href="/">Create New Member</a>
+    <a id="deleteButton" href="/delete">Delete Member</a>
+    <a id="signOut" href="/signOut">Sign Out</a>
+  
+</div>
     <input type="text" onkeyup="search()" id="myinput" placeholder="Search..." title="Type in a name">
     <div class="dropdown">
       <button class="dropbtn">Sort Members</button>

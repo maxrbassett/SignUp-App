@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>Auth</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link type="text/css" href="CSS/auth-style.css" rel="stylesheet">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+        <script src="https://www.gstatic.com/firebasejs/4.8.0/firebase.js"></script>
+        <script>
+            // Initialize Firebase
+            var config = {
+              apiKey: "AIzaSyDhzQwElOE6UdyjLjtFQ4N9bYXszjMm1Bw",
+              authDomain: "wardformauth.firebaseapp.com",
+              databaseURL: "https://wardformauth.firebaseio.com",
+              projectId: "wardformauth",
+              storageBucket: "wardformauth.appspot.com",
+              messagingSenderId: "110889448695"
+            };
+            firebase.initializeApp(config);
+          </script>
+       
+    </head>
+    <body>
+        <div id="loginContainer">
+            <p id="login">LOGIN</p>
+            <form action="/index" method="POST">
+                <p><input class="inputbox" id="email" name="email" type="text" placeholder="Email"></p>
+                <p><input class="inputbox" id="password" type="password" name="password" placeholder="Password"></p>                
+                <input class="submit" type="submit" id="signIn" name="submit" value="Sign In"><p id="or">OR</p>
+                <p><input class="submit" type="submit" id="createMember" name="submit" value="Create New User"></p>
+            </form>
+        </div>
+        <!-- <div id="loginContainer">
+                <p id="login">LOGIN</p>
+                    <p><input class="inputbox" id="email" name="email" type="text" placeholder="Email"></p>
+                    <p><input class="inputbox" id="password" type="password" name="password" placeholder="Password"></p>                
+                    <input class="submit" type="submit" id="signIn" name="submit" value="Sign In"><p id="or">OR</p>
+                    <p><input class="submit" type="submit"  name="submit" value="Create New User"></p>
+            </div> -->
+
+    </body>
+    <script>
+        $(document).ready(function(){
+            $("#signIn").click(function(e){
+                var parameters = { email: $("#email").val(), password: $("#password").val(), submit: "Sign In"}
+                e.preventDefault;
+                $.ajax({
+                    url:"/index",
+                    type: "POST",
+                    data: JSON.stringify(parameters),
+                    contentType: "application/json",
+                    dataType: "json",
+                    error: function(err){
+                        console.log(err);
+                        var errMessage = jQuery.parseJSON(err.responseText).message;
+                        alert(errMessage);
+                        location.reload();   
+                    }
+                })
+            })
+
+            $("#createMember").click(function(e){
+                var parameters = { email: $("#email").val(), password: $("#password").val(), submit: "Create Member"}
+                e.preventDefault;
+                $.ajax({
+                    url:"/index",
+                    type: "POST",
+                    data: JSON.stringify(parameters),
+                    contentType: "application/json",
+                    dataType: "json",
+                    error: function(err){
+                        console.log(err);
+                        var errMessage = jQuery.parseJSON(err.responseText).message;
+                        alert(errMessage);
+                        location.reload();   
+                    }
+                })
+            })
+
+           
+           
+            // firebase.auth().onAuthStateChanged(function(user) {
+            //     console.log("in onAuthStateChanged");
+                
+			// if (user) {
+            //     console.log("in user");
+            //     $.get('/index',function(data){
+            //         console.log("was successful");
+            //     })
+			// }else {}
+		    //     })
+            
+        })
+
+        
+    </script>
+</html>
